@@ -1,0 +1,50 @@
+﻿@page
+@model BookwormsOnline.Pages.errors.Error404Model
+@{
+    ViewData["title"] = "Page does not exists";
+}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 Page Not Found</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+
+        h1 {
+            font-size: 80px;
+            color: #e74c3c;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        #a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+            a:hover {
+                text-decoration: underline;
+            }
+    </style>
+</head>
+<body>
+    <div class="container" style="text-align: center; color: #333;">
+        <h1 style="font-size: 150px; color: #f44; margin-bottom: 0px;">404</h1>
+        <h2>Oops! Page Not Found</h2>
+        <p>The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.</p>
+        <p>You can return to the <a id="a" href="/">homepage</a> or use the navigation above to find what you need.</p>
+    </div>
+</body>

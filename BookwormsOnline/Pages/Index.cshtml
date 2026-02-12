@@ -1,0 +1,111 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="container mt-5">
+    <div class="text-center mb-4">
+        <h1 class="display-4">
+            Welcome, @System.Net.WebUtility.HtmlDecode(Model.CurrentUser.FirstName)!
+        </h1>
+    </div>
+
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h3>Your Profile Information</h3>
+        </div>
+        <div class="card-body">
+            @if (Model.CurrentUser != null)
+            {
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Name:</label>
+                            <p class="form-control-plaintext">
+                                @System.Net.WebUtility.HtmlDecode(Model.CurrentUser.FirstName)
+                                @System.Net.WebUtility.HtmlDecode(Model.CurrentUser.LastName)
+                            </p>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Email:</label>
+                            <p class="form-control-plaintext">
+                                @System.Net.WebUtility.HtmlDecode(Model.CurrentUser.Email)
+                            </p>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Mobile Number:</label>
+                            <p class="form-control-plaintext">
+                                @System.Net.WebUtility.HtmlDecode(Model.CurrentUser.MobileNo)
+                            </p>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Credit Card (Encrypted):</label>
+                            <p class="form-control-plaintext text-muted">
+                                @System.Net.WebUtility.HtmlDecode(Model.DecryptedCreditCard)
+                            </p>
+                            <small class="text-muted">
+                                Your credit card information is encrypted in our database
+                            </small>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Billing Address:</label>
+                            <p class="form-control-plaintext">
+                                @System.Net.WebUtility.HtmlDecode(Model.CurrentUser.BillingAddress)
+                            </p>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Shipping Address:</label>
+                            <p class="form-control-plaintext">
+                                @System.Net.WebUtility.HtmlDecode(Model.CurrentUser.ShippingAddress)
+                            </p>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Last Login:</label>
+                            <p class="form-control-plaintext">
+                                @Model.CurrentUser.LastLoginDate?.ToString("yyyy-MM-dd HH:mm:ss")
+                            </p>
+                        </div>
+
+                        @if (!string.IsNullOrEmpty(Model.CurrentUser.Photo))
+                        {
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Profile Photo:</label>
+                                <div>
+                                    <img src="@System.Net.WebUtility.HtmlDecode(Model.CurrentUser.Photo)"
+                                         alt="Profile Photo"
+                                         class="img-thumbnail"
+                                         style="max-width: 200px;" />
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+<div class="alert alert-info mt-3">
+    <i class="bi bi-shield-check"></i> Your session will expire after 1 minute of inactivity.
+</div>
+            }
+            else
+            {
+<div class="alert alert-warning">
+    Unable to load user information. Please <a asp-page="Logout">logout</a> and login again.
+</div>
+            }
+</div>
+<div class="card-footer">
+    <a asp-page="./ChangePassword" class="btn btn-primary">Change Password</a>
+    <form method="post" asp-page="Logout" asp-page-handler="Logout" class="d-inline">
+        <button type="submit" class="btn btn-danger">Logout</button>
+    </form>
+</div>
+</div>
+</div>

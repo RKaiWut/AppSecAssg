@@ -1,0 +1,50 @@
+﻿@page
+@model BookwormsOnline.Pages.errors.Error500Model
+@{
+    ViewData["title"] = "Server Broke";
+}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 Page Not Found</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+
+        h1 {
+            font-size: 80px;
+            color: #e74c3c;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        #a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" style="text-align: center; color: #000;">
+        <h1 style="font-size: 150px; color: #d4f; margin-bottom: 0px;">500</h1>
+        <h2>Oops! Internal Server Error.</h2>
+        <p>The server encountered an unexpected condition that prevented it from fulfilling your request.</p>
+        <p>Please try again later.</p>
+    </div>
+</body>

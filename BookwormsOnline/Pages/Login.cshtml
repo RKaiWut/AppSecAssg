@@ -1,0 +1,70 @@
+﻿@page
+@model BookwormsOnline.Pages.LoginModel
+@{
+}
+
+<head runat="server">
+	<title>Login Form</title>
+	<script src="https://www.google.com/recaptcha/api.js?render=@Model.RecaptchaSiteKey"></script>
+	<script>
+		function onSubmitLogin(e) {
+			e.preventDefault();
+			grecaptcha.ready(function() {
+				grecaptcha.execute('@Model.RecaptchaSiteKey', {action: 'login'}).then(function(token) {
+					document.getElementById('g-recaptcha-response').value = token;
+					document.getElementById('loginForm').submit();
+				});
+			});
+		}
+	</script>
+</head>
+
+
+<div class="container mt-5">
+
+	<div class="row justify-content-center align-items-center">
+
+	<div class="col-sm-12 col-md-12 col-lg-4">
+		<h1 class="mb-3">Login </h1>
+
+		@if (Model.HttpContext.Request.Query.ContainsKey("sessionExpired"))
+		{
+			<div class="alert alert-warning" role="alert">
+				Your session has expired. Please log in again.
+			</div>
+		}
+
+		<form method="post" id="loginForm" onsubmit="onSubmitLogin(event)" asp-antiforgery="true">
+				<div asp-validation-summary="All" class="text-danger"></div>
+				<input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response" />
+
+				<div class="mb-3">
+					<label class="form-label" asp-for="LModel.Email">Email Address</label>
+					<input type="text" asp-for="LModel.Email" class="form-control" />
+					<span asp-validation-for="LModel.Email" class="text-danger"></span>
+				</div>
+
+				<div class="mb-3">
+					<label class="form-label" asp-for="LModel.Password">Password</label>
+					<input type="password" asp-for="LModel.Password" class="form-control" />
+					<span asp-validation-for="LModel.Password" class="text-danger"></span>
+				</div>
+
+				<div class="mb-3 form-check">
+					<input type="checkbox" asp-for="LModel.RememberMe" class="form-check-input" />
+					<label class="form-check-label" asp-for="LModel.RememberMe">Remember Me?</label>
+				</div>
+
+				<div class="mb-3">
+					<button type="submit" class="btn btn-primary">Login</button>
+				</div>
+
+				<div class="mb-3">
+					<a asp-page="./ForgotPassword" class="text-decoration-none">Forgot your password?</a><br />
+					<a asp-page="./Register" class="text-decoration-none">Register</a>
+				</div>
+
+			</form>
+		</div>
+	</div>
+</div>

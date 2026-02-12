@@ -1,0 +1,82 @@
+@page
+@model BookwormsOnline.Pages.Verify2FAModel
+@{
+    ViewData["Title"] = "Two-Factor Authentication";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h2>@ViewData["Title"]</h2>
+
+            <div class="alert alert-info" role="alert">
+                Enter the code from your authenticator app to continue.
+            </div>
+
+            <form method="post">
+                <input type="hidden" asp-for="RememberMe" value="@Model.RememberMe" />
+                <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+                @if (!Model.UseRecoveryCode)
+                {
+                    <div class="mb-3">
+                        <label asp-for="TwoFactorCode" class="form-label">Authenticator Code</label>
+                        <input asp-for="TwoFactorCode" class="form-control" placeholder="000000" maxlength="6" autocomplete="off" />
+                        <span asp-validation-for="TwoFactorCode" class="text-danger"></span>
+                        <div class="form-text">Enter the 6-digit code from your authenticator app.</div>
+                    </div>
+
+                    <div class="mb-3 form-check">
+                        <input asp-for="RememberMachine" class="form-check-input" />
+                        <label asp-for="RememberMachine" class="form-check-label">
+                            Remember this device
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Verify</button>
+                    
+                    <hr class="my-4" />
+                    
+                    <p class="text-muted">Lost access to your authenticator app?</p>
+                    <button type="submit" asp-page-handler="Post" asp-route-useRecoveryCode="true" 
+                            class="btn btn-link" 
+                            onclick="document.getElementById('useRecoveryCode').value = 'true'; return true;">
+                        Use a recovery code
+                    </button>
+                    <input type="hidden" id="useRecoveryCode" asp-for="UseRecoveryCode" value="false" />
+                }
+                else
+                {
+                    <div class="alert alert-warning" role="alert">
+                        <strong>Recovery Code</strong>
+                        <p class="mb-0">You are using a recovery code. Each code can only be used once.</p>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="TwoFactorCode" class="form-label">Recovery Code</label>
+                        <input asp-for="TwoFactorCode" class="form-control" autocomplete="off" />
+                        <span asp-validation-for="TwoFactorCode" class="text-danger"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Verify</button>
+                    
+                    <hr class="my-4" />
+                    
+                    <button type="submit" asp-page-handler="Post" asp-route-useRecoveryCode="false" 
+                            class="btn btn-link"
+                            onclick="document.getElementById('useRecoveryCode').value = 'false'; return true;">
+                        Use authenticator code instead
+                    </button>
+                }
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        // Auto-focus on the code input
+        document.querySelector('input[name="TwoFactorCode"]').focus();
+    </script>
+}

@@ -1,0 +1,91 @@
+@page
+@model BookwormsOnline.Pages.Setup2FAModel
+@{
+    ViewData["Title"] = "Setup Two-Factor Authentication";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h2>@ViewData["Title"]</h2>
+
+            @if (Model.IsMandatory)
+            {
+                <div class="alert alert-danger" role="alert">
+                    <strong>Two-Factor Authentication is Required!</strong>
+                    <p>You must set up two-factor authentication to access your account. This adds an extra layer of security to protect your account.</p>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info" role="alert">
+                    Setting up two-factor authentication adds an extra layer of security to your account.
+                </div>
+            }
+
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Step 1: Download an Authenticator App</h5>
+                    <p>Download and install one of these authenticator apps on your smartphone:</p>
+                    <ul>
+                        <li>Google Authenticator (Android/iOS)</li>
+                        <li>Microsoft Authenticator (Android/iOS)</li>
+                        <li>Authy (Android/iOS)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Step 2: Scan the QR Code</h5>
+                    <p>Open your authenticator app and scan this QR code:</p>
+                    
+                    <div class="text-center mb-3">
+                        <div id="qrCode" class="d-inline-block"></div>
+                    </div>
+
+                    <div class="alert alert-secondary">
+                        <strong>Can't scan the QR code?</strong>
+                        <p class="mb-0">Enter this key manually in your authenticator app:</p>
+                        <code class="d-block mt-2 p-2 bg-light">@Model.SharedKey</code>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Step 3: Verify Your Setup</h5>
+                    <p>Enter the 6-digit code from your authenticator app to verify:</p>
+
+                    <form method="post">
+                        <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="VerificationCode" class="form-label">Verification Code</label>
+                            <input asp-for="VerificationCode" class="form-control" placeholder="000000" maxlength="6" />
+                            <span asp-validation-for="VerificationCode" class="text-danger"></span>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Verify and Enable 2FA</button>
+                        @if (!Model.IsMandatory)
+                        {
+                            <a asp-page="./Index" class="btn btn-secondary">Cancel</a>
+                        }
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script>
+        new QRCode(document.getElementById("qrCode"), {
+            text: "@Model.AuthenticatorUri",
+            width: 200,
+            height: 200
+        });
+    </script>
+    <partial name="_ValidationScriptsPartial" />
+}
